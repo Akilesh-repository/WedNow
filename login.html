@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | WedNow Wedding Planning & Event Coordination</title>
+    <script src="tailwind.js"></script>
+    <link rel="icon" type="image/jpeg" href="images\images (6).png">
+    <link rel="icon" type="image/png" href="images\images (6).png">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontWeight: {
+                        semibold: '500',
+                        bold: '600',
+                        extrabold: '800',
+                        black: '900'
+                    },
+                    colors: {
+                        accent: 'var(--accent-color)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* === CORE & THEME VARIABLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #FAFAFA;
+            --bg-secondary: #FFF1F2;
+            --card-bg: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --accent-color: #E11D48;
+            --accent-dark: #BE123C;
+            --accent-light: #FFE4E6;
+            --border-color: #FECDD3;
+            --input-bg: #FFF5F6;
+            --input-border: #FECDD3;
+            --input-focus-bg: #FFFFFF;
+            --input-text: #0F172A;
+            --input-icon: #FB7185;
+            --card-shadow: 0 25px 60px -15px rgba(225, 29, 72, 0.12), 0 0 0 1px rgba(254, 205, 211, 0.6);
+            --btn-shadow: 0 8px 20px -4px rgba(225, 29, 72, 0.35);
+        }
+
+        body.dark-mode {
+            --bg-color: #0F172A;
+            --bg-secondary: #1E293B;
+            --card-bg: #111827;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --accent-color: #FB7185;
+            --accent-dark: #E11D48;
+            --accent-light: rgba(251, 113, 133, 0.15);
+            --border-color: #334155;
+            --input-bg: #0F172A;
+            --input-border: #334155;
+            --input-focus-bg: #0B1120;
+            --input-text: #F8FAFC;
+            --input-icon: #94A3B8;
+            --card-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(51, 65, 85, 0.6);
+            --btn-shadow: 0 8px 20px -4px rgba(251, 113, 133, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+            transition: background-color 0.35s ease, color 0.35s ease;
+        }
+
+        /* RTL RULES */
+        [dir="rtl"] {
+            text-align: right;
+        }
+
+        [dir="rtl"] .back-link i {
+            transform: rotate(180deg);
+        }
+
+        [dir="rtl"] .input-icon {
+            left: auto;
+            right: 16px;
+        }
+
+        [dir="rtl"] .input-field {
+            padding: 0 44px 0 16px !important;
+        }
+
+        [dir="rtl"] .password-field {
+            padding-right: 44px !important;
+            padding-left: 40px !important;
+        }
+
+        [dir="rtl"] .password-toggle {
+            right: auto;
+            left: 12px;
+        }
+
+        [dir="rtl"] .auth-btn i {
+            margin-left: 0;
+            margin-right: 0.5rem;
+            transform: rotate(180deg);
+        }
+
+        [dir="rtl"] .ml-2 {
+            margin-left: 0;
+            margin-right: 0.5rem;
+        }
+
+        /* === AMBIENT BACKGROUND GLOWS === */
+        .ambient-glow-1 {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(225, 29, 72, 0.15) 0%, rgba(225, 29, 72, 0) 70%);
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient-glow-2 {
+            position: fixed;
+            bottom: -10%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, rgba(251, 191, 36, 0) 70%);
+            filter: blur(90px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body.dark-mode .ambient-glow-1 {
+            background: radial-gradient(circle, rgba(251, 113, 133, 0.18) 0%, rgba(251, 113, 133, 0) 70%);
+        }
+
+        body.dark-mode .ambient-glow-2 {
+            background: radial-gradient(circle, rgba(217, 119, 6, 0.1) 0%, rgba(217, 119, 6, 0) 70%);
+        }
+
+        /* === TOP CONTROLS BAR === */
+        .topbar-capsule {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 20;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .back-link:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            transform: translateX(-3px);
+        }
+
+        [dir="rtl"] .back-link:hover {
+            transform: translateX(3px);
+        }
+
+        .theme-toggle-pill {
+            width: 52px;
+            height: 28px;
+            background: var(--bg-secondary);
+            border-radius: 30px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .theme-toggle-pill i {
+            font-size: 10px;
+            z-index: 1;
+        }
+
+        .theme-toggle-pill .fa-sun {
+            color: #f59e0b;
+        }
+
+        .theme-toggle-pill .fa-moon {
+            color: #94a3b8;
+        }
+
+        .theme-toggle-pill .thumb {
+            position: absolute;
+            top: 1px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+            border: 1px solid var(--border-color);
+        }
+
+        body.dark-mode .theme-toggle-pill .thumb {
+            transform: translateX(22px);
+            background: #1e293b;
+        }
+
+        .rtl-btn-style {
+            height: 28px;
+            padding: 0 12px;
+            background: var(--bg-secondary);
+            border-radius: 9999px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: all 0.3s;
+        }
+
+        .rtl-btn-style:hover {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+        }
+
+        /* === UNIFIED AUTH CONTAINER === */
+        .auth-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px 36px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 1020px;
+            min-height: 610px;
+            background: var(--card-bg);
+            border-radius: 32px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            animation: authFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes authFadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* === LEFT VISUAL SHOWCASE PANEL === */
+        .visual-panel {
+            width: 48%;
+            position: relative;
+            display: none;
+            overflow: hidden;
+        }
+
+        @media (min-width: 960px) {
+            .visual-panel {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+        }
+
+        .visual-panel-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 8s ease;
+        }
+
+        .auth-container:hover .visual-panel-img {
+            transform: scale(1.05);
+        }
+
+        .visual-panel-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.3) 40%, rgba(15, 23, 42, 0.92) 100%);
+            z-index: 1;
+        }
+
+        .visual-content {
+            position: relative;
+            z-index: 2;
+            padding: 40px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .visual-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ffffff;
+            width: fit-content;
+        }
+
+        .visual-quote-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        /* === RIGHT FORM PANEL === */
+        .form-panel {
+            width: 100%;
+            padding: clamp(28px, 5vw, 48px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            background: var(--card-bg);
+        }
+
+        @media (min-width: 960px) {
+            .form-panel {
+                width: 52%;
+            }
+        }
+
+        .auth-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-main) !important;
+            margin-bottom: 24px;
+        }
+
+        .auth-header h2 {
+            font-size: clamp(1.5rem, 3.5vw, 1.85rem);
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .auth-header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 6px;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        /* === INPUT FIELDS & FORM TEMPLATES (PRESERVED) === */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--input-icon);
+            font-size: 0.9rem;
+            pointer-events: none;
+            transition: color 0.25s;
+        }
+
+        .input-field {
+            width: 100%;
+            height: 46px;
+            padding: 0 16px 0 44px;
+            border: 1.5px solid var(--input-border);
+            background-color: var(--input-bg);
+            color: var(--input-text);
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.25s ease;
+        }
+
+        .input-field::placeholder {
+            color: var(--input-icon);
+            opacity: 0.65;
+            font-weight: 400;
+        }
+
+        .input-field:hover {
+            border-color: var(--accent-color);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background-color: var(--input-focus-bg);
+            box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.12);
+        }
+
+        body.dark-mode .input-field:focus {
+            box-shadow: 0 0 0 4px rgba(251, 113, 133, 0.16);
+        }
+
+        .input-field:focus + .input-icon,
+        .input-field:focus ~ .input-icon {
+            color: var(--accent-color);
+        }
+
+        .password-field {
+            padding-right: 42px !important;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--input-icon);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            font-size: 0.9rem;
+            z-index: 5;
+            transition: color 0.25s;
+        }
+
+        .password-toggle:hover {
+            color: var(--accent-color);
+        }
+
+        /* UTILITY ROW */
+        .utility-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 2px;
+        }
+
+        .custom-checkbox {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            height: 18px;
+            width: 18px;
+            background-color: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .custom-checkbox input:checked ~ .checkmark::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: white;
+            font-size: 10px;
+        }
+
+        /* AUTH BUTTON */
+        .auth-btn {
+            width: 100%;
+            height: 48px;
+            background: var(--accent-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: var(--btn-shadow);
+            margin-top: 6px;
+        }
+
+        .auth-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -5px rgba(225, 29, 72, 0.45);
+        }
+
+        .auth-btn:active {
+            transform: translateY(0);
+        }
+
+        /* DIVIDER */
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 18px 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider span {
+            position: relative;
+            background: var(--card-bg);
+            padding: 0 14px;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            z-index: 1;
+        }
+
+        /* SOCIAL LOGIN */
+        .social-login {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .social-btn {
+            flex: 1;
+            height: 44px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            background-color: var(--bg-secondary);
+            font-size: 1rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background-color: var(--card-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        /* FOOTER LINKS */
+        .login-link {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: var(--accent-color);
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .login-link a:hover {
+            color: var(--accent-dark);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- AMBIENT LIGHTS -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <!-- TOP CONTROLS BAR -->
+    <header class="topbar-capsule">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to WedNow</span>
+        </a>
+
+        <div class="flex items-center gap-2.5">
+            <div id="theme-toggle" class="theme-toggle-pill" title="Toggle Dark/Light Mode">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+                <div class="thumb"></div>
+            </div>
+            <button id="rtl-toggle" class="rtl-btn-style" title="Toggle LTR/RTL Direction">LTR</button>
+        </div>
+    </header>
+
+    <!-- UNIFIED AUTH MAIN WRAPPER -->
+    <main class="auth-wrapper">
+        <div class="auth-container">
+
+            <!-- LEFT VISUAL SHOWCASE PANEL (Identical layout architecture) -->
+            <div class="visual-panel">
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80" alt="Luxury Wedding Celebration" class="visual-panel-img">
+                <div class="visual-panel-overlay"></div>
+
+                <div class="visual-content">
+                    <span class="visual-badge">
+                        <i class="fas fa-crown text-rose-400"></i> Global Event Architecture
+                    </span>
+
+                    <div class="space-y-4">
+                        <div class="visual-quote-card">
+                            <h3 class="text-2xl font-black leading-tight text-white mb-2">
+                                Where Romance Meets <br>
+                                <span class="italic text-transparent bg-clip-text bg-gradient-to-r from-rose-300 via-rose-200 to-amber-200">Flawless</span> Execution.
+                            </h3>
+                            <p class="text-xs text-slate-200 leading-relaxed font-medium">
+                                Access your bespoke production ledger, floorplans, and vendor itineraries with 24/7 coordinator assistance.
+                            </p>
+                        </div>
+
+                        <div class="flex items-center justify-between px-2 text-white/80 text-[11px] font-bold uppercase tracking-widest">
+                            <span><i class="fas fa-certificate text-rose-400 mr-1.5"></i> 500+ Curated Galas</span>
+                            <span><i class="fas fa-star text-amber-300 mr-1.5"></i> 4.9/5 Rating</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT FORM PANEL -->
+            <div class="form-panel">
+                <a href="index.html" class="auth-brand">
+                    <span class="w-10 h-10 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] flex items-center justify-center shrink-0 shadow-sm">
+                        <i class="fas fa-champagne-glasses text-[var(--accent-color)] text-sm"></i>
+                    </span>
+                    <span class="text-xl font-bold tracking-widest uppercase">WedNow</span>
+                </a>
+
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to access your couple dashboard and vendor schedules.</p>
+                </div>
+
+                <!-- PRESERVED LOGIN FORM TEMPLATE -->
+                <form id="login-form">
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" class="input-field" placeholder="couple@wednow.com" required>
+                            <i class="fas fa-envelope input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="password" class="input-field password-field" placeholder="••••••••" required>
+                            <i class="fas fa-lock input-icon"></i>
+                            <button type="button" class="password-toggle" id="toggle-password" tabindex="-1" aria-label="Toggle password visibility">
+                                <i class="fas fa-eye" id="toggle-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PRESERVED UTILITY ROW -->
+                    <div class="utility-row">
+                        <label class="custom-checkbox">
+                            <input type="checkbox">
+                            <div class="checkmark"></div>
+                            <span class="ml-2 text-[0.7rem] font-semibold" style="color: var(--text-muted);">Remember me</span>
+                        </label>
+                        <a href="#" class="text-[0.7rem] font-bold transition whitespace-nowrap hover:opacity-80" style="color: var(--accent-color);">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="auth-btn">Access Dashboard <i class="fas fa-arrow-right ml-2 text-xs"></i></button>
+                </form>
+
+                <div class="divider"><span>Or authenticate with</span></div>
+
+                <!-- PRESERVED 3 SOCIAL BUTTONS -->
+                <div class="social-login">
+                    <button class="social-btn" type="button" title="Sign in with Google"><i class="fab fa-google"></i></button>
+                    <button class="social-btn" type="button" title="Sign in with Apple"><i class="fab fa-apple"></i></button>
+                    <button class="social-btn" type="button" title="Sign in with Pinterest"><i class="fab fa-pinterest"></i></button>
+                </div>
+
+                <div class="login-link">
+                    New to WedNow? <a href="register.html">Request a Consultation</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- UNIFIED JAVASCRIPT LOGIC -->
+    <script>
+        // --- THEME LOGIC ---
+        const themeToggle = document.getElementById('theme-toggle');
+        function applyTheme(isDark) {
+            document.body.classList.toggle('dark-mode', isDark);
+        }
+        applyTheme((localStorage.getItem('theme') || 'light') === 'dark');
+
+        themeToggle.onclick = () => {
+            const isDark = !document.body.classList.contains('dark-mode');
+            applyTheme(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        };
+
+        // --- RTL LOGIC ---
+        const rtlToggle = document.getElementById('rtl-toggle');
+        function applyRTL(dir) {
+            document.documentElement.dir = dir;
+            rtlToggle.innerText = dir === 'rtl' ? 'RTL' : 'LTR';
+        }
+        applyRTL(localStorage.getItem('dir') || 'ltr');
+
+        rtlToggle.onclick = () => {
+            const newDir = document.documentElement.dir === 'rtl' ? 'ltr' : 'rtl';
+            localStorage.setItem('dir', newDir);
+            applyRTL(newDir);
+        };
+
+        // --- PASSWORD TOGGLE LOGIC ---
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggle-icon');
+
+        togglePasswordBtn.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            toggleIcon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+        });
+
+        // --- FORM SUBMISSION ---
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            window.location.href = 'user.html'; // Navigates to WedNow Couple Dashboard
+        });
+    </script>
+</body>
+
+</html>

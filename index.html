@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WedNow | Wedding Planning & Event Coordination</title>
+    <script src="tailwind.js"></script>
+    <link rel="icon" type="image/jpeg" href="images\images (6).png">
+    <link rel="icon" type="image/png" href="images\images (6).png">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontWeight: { semibold: '500', bold: '600', extrabold: '800', black: '900' },
+                    colors: { accent: 'var(--accent-color)' }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* === CORE & THEME VARIABLES === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); transition: background-color 0.3s, color 0.3s; }
+
+        :root {
+            --bg-color: #FAFAFA; --bg-secondary: #FFF1F2; --bg-card: #FFFFFF;
+            --text-main: #0F172A; --text-muted: #64748B;
+            --accent-color: #E11D48; --accent-dark: #BE123C; --border-color: #FECDD3;
+            --nav-bg: rgba(255, 255, 255, 0.88); --drawer-bg: rgba(255, 255, 255, 0.98);
+            --menu-hover-bg: rgba(225, 29, 72, 0.08);
+        }
+
+        body.dark-mode {
+            --bg-color: #0F172A; --bg-secondary: #1E293B; --bg-card: #1E293B;
+            --text-main: #F8FAFC; --text-muted: #94A3B8;
+            --accent-color: #FB7185; --accent-dark: #E11D48; --border-color: #334155;
+            --nav-bg: rgba(15, 23, 42, 0.88); --drawer-bg: rgba(15, 23, 42, 0.98);
+            --menu-hover-bg: rgba(251, 113, 133, 0.12);
+        }
+
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+        [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
+
+        /* === FLOATING CAPSULE NAVBAR === */
+        .navbar { position: fixed; top: 16px; left: 0; width: 100%; z-index: 1000; transition: all 0.35s ease; padding: 0 16px; }
+        .navbar-capsule { max-width: 1400px; margin: 0 auto; background: var(--nav-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 9999px; height: 70px; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 12px 35px -10px rgba(225, 29, 72, 0.12); transition: all 0.35s ease; }
+        .navbar.scrolled { top: 8px; }
+        .navbar.scrolled .navbar-capsule { height: 62px; border-color: var(--accent-color); box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.18); }
+
+        .nav-link { padding: 8px 14px; border-radius: 9999px; color: var(--text-main); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+        .nav-link:hover, .nav-link.active { background: var(--menu-hover-bg); color: var(--accent-color); }
+
+        .dropdown { position: relative; display: flex; align-items: center; height: 100%; }
+        .dropdown-menu { position: absolute; top: 50px; left: 0; transform: translateY(12px); opacity: 0; visibility: hidden; transition: all 0.25s ease; z-index: 100; }
+        .dropdown-inner { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; min-width: 210px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-item { display: block; padding: 10px 16px; border-radius: 10px; color: var(--text-main); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; white-space: nowrap; }
+        .dropdown-item:hover { background: var(--menu-hover-bg); color: var(--accent-color); transform: translateX(4px); }
+
+        /* === CONTROLS & BUTTONS === */
+        .theme-toggle-pill { width: 52px; height: 28px; background: var(--bg-secondary); border-radius: 30px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 6px; border: 1px solid var(--border-color); }
+        .theme-toggle-pill i { font-size: 10px; z-index: 1; }
+        .theme-toggle-pill .fa-sun { color: #f59e0b; }
+        .theme-toggle-pill .fa-moon { color: #999; }
+        .theme-toggle-pill .thumb { position: absolute; top: 1px; left: 2px; width: 24px; height: 24px; background: white; border-radius: 50%; transition: transform 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 2; border: 1px solid var(--border-color); }
+        body.dark-mode .theme-toggle-pill .thumb { transform: translateX(22px); background: #333; }
+
+        .rtl-btn-style { width: 44px; height: 28px; background: var(--bg-secondary); border-radius: 9999px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; cursor: pointer; color: var(--text-main); transition: all 0.3s; }
+        .rtl-btn-style:hover { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
+
+        .btn { padding: 12px 28px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; border-radius: 9999px; }
+        .btn-solid { background: var(--accent-color); color: #FFFFFF !important; }
+        .btn-solid:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 8px 20px -3px rgba(225, 29, 72, 0.35); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--accent-color); color: var(--accent-color) !important; transform: translateY(-2px); }
+
+        /* === MOBILE DRAWER & FOOTER === */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; backdrop-filter: blur(4px); }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
+        .fullscreen-menu { position: fixed; top: 12px; right: 12px; bottom: 12px; width: calc(100% - 24px); max-width: 390px; background: var(--drawer-bg); z-index: 1001; border-radius: 28px; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateX(105%); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); }
+        [dir="rtl"] .fullscreen-menu { right: auto; left: 12px; transform: translateX(-105%); }
+        .fullscreen-menu.active { opacity: 1; visibility: visible; transform: translateX(0); }
+        .mobile-link { display: block; width: 100%; padding: 14px 28px; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-main); transition: all 0.25s; border-bottom: 1px solid var(--border-color); }
+        .mobile-link:hover { color: var(--accent-color); padding-left: 36px; background: var(--menu-hover-bg); }
+
+        footer { background: var(--bg-secondary); border-top: 1px solid var(--border-color); padding-top: 70px; }
+        footer h4 { color: var(--text-main); font-weight: 600; font-size: 1.05rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        footer a, footer li, footer span { color: var(--text-muted); transition: all 0.3s; font-size: 0.95rem; }
+        footer a:hover { color: var(--accent-color); }
+        .social-link-circle { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: var(--text-main); }
+        .social-link-circle:hover { background: var(--accent-color); border-color: var(--accent-color); color: #fff; transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid var(--border-color); padding: 28px 0; margin-top: 50px; }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+
+    <!-- NAVBAR PART (Floating Capsule Design) -->
+    <nav class="navbar" id="main-nav">
+        <div class="navbar-capsule">
+            <a href="index.html" class="inline-flex items-center gap-3 text-xl md:text-2xl font-bold tracking-widest uppercase shrink-0" style="color: var(--text-main) !important;">
+                <span class="w-10 h-10 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] flex items-center justify-center">
+                    <i class="fas fa-champagne-glasses" style="color: var(--accent-color); font-size: 1.1rem;"></i>
+                </span>
+                WedNow
+            </a>
+
+            <div class="hidden xl:flex justify-center items-center gap-1">
+                <div class="dropdown">
+                    <div class="nav-link active">Home <i class="fas fa-chevron-down text-[10px] opacity-50"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="index.html" class="dropdown-item">Home Page 1</a>
+                            <a href="home-2.html" class="dropdown-item">Home Page 2</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="pricing.html" class="nav-link">Pricing</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <div class="dropdown">
+                    <div class="nav-link">Dashboard <i class="fas fa-chevron-down text-[10px] opacity-50"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="user.html" class="dropdown-item">User Dashboard</a>
+                            <a href="admin.html" class="dropdown-item">Admin Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden xl:flex items-center gap-2.5 shrink-0">
+                <div id="theme-toggle-desktop" class="theme-toggle-pill" title="Toggle Dark Mode">
+                    <i class="fas fa-sun"></i><i class="fas fa-moon"></i><div class="thumb"></div>
+                </div>
+                <button id="rtl-btn" class="rtl-btn-style" title="Toggle LTR/RTL">LTR</button>
+                <a href="login.html" class="btn btn-solid !px-6 !py-2.5 !text-[11px] ml-1">Login</a>
+            </div>
+
+            <div class="xl:hidden flex items-center">
+                <button id="mobile-btn" class="w-10 h-10 rounded-full flex items-center justify-center bg-[var(--bg-secondary)] border border-[var(--border-color)] text-lg text-[var(--text-main)] hover:bg-[var(--accent-color)] hover:text-white transition-colors">
+                    <i class="fas fa-bars-staggered"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HAMBURGER MENU PART -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <div class="fullscreen-menu" id="fullscreen-menu">
+        <div class="w-full px-7 py-5 flex justify-between items-center border-b border-[var(--border-color)]">
+            <a href="index.html" class="inline-flex items-center gap-2.5 text-xl font-bold tracking-widest uppercase" style="color: var(--text-main) !important;">
+                <i class="fas fa-champagne-glasses" style="color: var(--accent-color);"></i> WedNow
+            </a>
+            <button id="close-menu" class="w-9 h-9 rounded-full flex items-center justify-center bg-[var(--bg-secondary)] text-[var(--text-main)] hover:text-[var(--accent-color)]">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="flex flex-col w-full overflow-y-auto flex-1 py-2">
+            <a href="index.html" class="mobile-link" style="color: var(--accent-color);">Home Page 1</a>
+            <a href="home-2.html" class="mobile-link">Home Page 2</a>
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="services.html" class="mobile-link">Services</a>
+            <a href="pricing.html" class="mobile-link">Pricing</a>
+            <a href="blog.html" class="mobile-link">Blog</a>
+            <a href="faq.html" class="mobile-link">FAQ</a>
+            <a href="contact.html" class="mobile-link">Contact</a>
+            <div class="px-7 mt-4 mb-1"><span class="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest">Portals</span></div>
+            <a href="user.html" class="mobile-link !text-sm text-[var(--text-muted)]">User Dashboard</a>
+            <a href="admin.html" class="mobile-link !text-sm text-[var(--text-muted)]">Admin Dashboard</a>
+        </div>
+
+        <div class="w-full px-7 py-6 border-t border-[var(--border-color)] flex flex-col gap-4 bg-[var(--bg-secondary)]">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-[var(--text-muted)] text-[10px] uppercase tracking-widest">Theme</span>
+                    <div id="theme-toggle-mobile" class="theme-toggle-pill"><i class="fas fa-sun"></i><i class="fas fa-moon"></i><div class="thumb"></div></div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[var(--text-muted)] text-[10px] uppercase tracking-widest">Dir</span>
+                    <button id="rtl-toggle-mobile" class="rtl-btn-style">LTR</button>
+                </div>
+            </div>
+            <a href="login.html" class="btn btn-solid w-full !py-3">Login</a>
+        </div>
+    </div>
+
+    <!-- HERO BANNER PART (Fits 100% Inside Viewport) -->
+    <section class="relative w-full min-h-[100dvh] xl:h-[100dvh] pt-28 pb-8 flex items-center overflow-hidden bg-[var(--bg-color)] border-b border-[var(--border-color)]">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[300px] bg-[var(--accent-color)] opacity-[0.06] rounded-full blur-[110px] pointer-events-none"></div>
+
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12 w-full grid grid-cols-1 xl:grid-cols-12 gap-8 items-center relative z-10">
+            <!-- Left Editorial Copy & Stats (7 Cols) -->
+            <div class="xl:col-span-6 flex flex-col items-start text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--bg-secondary)] text-[var(--accent-color)] text-[11px] font-bold uppercase tracking-widest mb-4 border border-[var(--border-color)]">
+                    <i class="fas fa-heart"></i> Luxury Wedding & Event Architecture
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl xl:text-[3.75rem] font-black leading-[1.08] mb-4 text-[var(--text-main)] tracking-tight">
+                    Where Timeless Romance Meets <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-color)] to-amber-500 italic">Flawless</span> Execution.
+                </h1>
+
+                <p class="text-[var(--text-muted)] text-sm md:text-base max-w-xl font-medium mb-6 leading-relaxed">
+                    From private European châteaux to bespoke botanical receptions, WedNow orchestrates every floral detail, vendor timeline, and guest experience with signature precision.
+                </p>
+
+                <div class="flex flex-wrap gap-3 mb-8">
+                    <a href="services.html" class="btn btn-solid !py-3.5 !px-8 text-xs gap-2.5 group">
+                        Explore Services <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="pricing.html" class="btn btn-outline !bg-[var(--bg-card)] !py-3.5 !px-8 text-xs">
+                        View Packages
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 w-full max-w-lg bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-4 shadow-sm">
+                    <div><h4 class="text-xl font-black text-[var(--text-main)]">500<span class="text-[var(--accent-color)]">+</span></h4><p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-bold">Weddings Planned</p></div>
+                    <div class="border-x border-[var(--border-color)] px-4"><h4 class="text-xl font-black text-[var(--text-main)]">120<span class="text-[var(--accent-color)]">+</span></h4><p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-bold">Luxury Estates</p></div>
+                    <div><h4 class="text-xl font-black text-[var(--text-main)]">4.9<span class="text-[var(--accent-color)]">★</span></h4><p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-bold">Couple Rating</p></div>
+                </div>
+            </div>
+
+            <!-- Right 3-Arch Compact Visual Bento (6 Cols) -->
+            <div class="xl:col-span-6 grid grid-cols-3 gap-3 sm:gap-4 items-center h-[340px] sm:h-[430px] xl:h-[72vh] max-h-[520px]">
+                <div class="h-[82%] rounded-t-full rounded-b-3xl overflow-hidden border-4 border-[var(--bg-card)] shadow-lg relative group">
+                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=700&q=80" alt="Floral Design" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <span class="absolute bottom-3 inset-x-2 bg-black/60 backdrop-blur-md text-white text-[9px] font-bold uppercase tracking-widest py-1.5 rounded-full text-center">Floral Styling</span>
+                </div>
+                <div class="h-full rounded-t-full rounded-b-3xl overflow-hidden border-4 border-[var(--accent-color)] shadow-2xl relative group">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Bride & Groom" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <span class="absolute bottom-3 inset-x-2 bg-[var(--accent-color)] text-white text-[9px] font-bold uppercase tracking-widest py-1.5 rounded-full text-center shadow-md">2026 Couture</span>
+                </div>
+                <div class="h-[82%] rounded-t-full rounded-b-3xl overflow-hidden border-4 border-[var(--bg-card)] shadow-lg relative group">
+                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=80" alt="Destination Gala" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <span class="absolute bottom-3 inset-x-2 bg-black/60 backdrop-blur-md text-white text-[9px] font-bold uppercase tracking-widest py-1.5 rounded-full text-center">Royal Galas</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN HOMEPAGE SECTIONS (6 Sections, ~50 Lines Each) -->
+    <main class="w-full bg-[var(--bg-color)]">
+
+        <!-- SECTION 1: Signature Wedding & Event Styles -->
+        <section class="py-20 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+            <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+                <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-4">
+                    <div>
+                        <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest block mb-2">
+                            <i class="fas fa-gem mr-1"></i> Curated Experiences
+                        </span>
+                        <h2 class="text-3xl md:text-4xl font-black text-[var(--text-main)] tracking-tight">
+                            Signature Wedding & Event Styles
+                        </h2>
+                    </div>
+                    <a href="services.html" class="btn btn-outline bg-[var(--bg-card)]">
+                        Explore All Styles
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Style Card 1 -->
+                    <a href="services.html" class="group relative h-[400px] rounded-[28px] overflow-hidden shadow-lg border border-[var(--border-color)] block">
+                        <img src="https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=800&q=80" alt="Coastal Destination" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-[var(--accent-color)] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+                            Most Popular
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-8">
+                            <span class="text-rose-300 text-xs font-bold uppercase tracking-widest mb-1">Italy • Greece • Bali</span>
+                            <h3 class="text-2xl font-black text-white mb-2">Destination Vows</h3>
+                            <p class="text-gray-300 text-sm">Multi-day coastal celebrations, guest flight concierge, and sunset cliffside ceremonies.</p>
+                        </div>
+                    </a>
+
+                    <!-- Style Card 2 -->
+                    <a href="services.html" class="group relative h-[400px] rounded-[28px] overflow-hidden shadow-lg border border-[var(--border-color)] block">
+                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80" alt="Botanical Conservatory" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+                            Bespoke Florals
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-8">
+                            <span class="text-rose-300 text-xs font-bold uppercase tracking-widest mb-1">Glasshouse & Gardens</span>
+                            <h3 class="text-2xl font-black text-white mb-2">Botanical Conservatories</h3>
+                            <p class="text-gray-300 text-sm">Suspended floral installations, candlelit greenhouse banquets, and organic acoustic sets.</p>
+                        </div>
+                    </a>
+
+                    <!-- Style Card 3 -->
+                    <a href="services.html" class="group relative h-[400px] rounded-[28px] overflow-hidden shadow-lg border border-[var(--border-color)] block">
+                        <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80" alt="Grand Ballroom" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+                            Black Tie
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-8">
+                            <span class="text-rose-300 text-xs font-bold uppercase tracking-widest mb-1">5-Star Estates & Palaces</span>
+                            <h3 class="text-2xl font-black text-white mb-2">Grand Ballroom Galas</h3>
+                            <p class="text-gray-300 text-sm">Crystal chandeliers, live symphony entrances, and Michelin-curated 7-course tasting menus.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: All-Inclusive Planning Suite (Bento Grid) -->
+        <section class="py-20 bg-[var(--bg-color)] border-b border-[var(--border-color)]">
+            <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest block mb-2">
+                        <i class="fas fa-layer-group mr-1"></i> Digital & On-Site Precision
+                    </span>
+                    <h2 class="text-3xl md:text-4xl font-black text-[var(--text-main)] mb-3">
+                        Everything Inside Your WedNow Portal
+                    </h2>
+                    <p class="text-[var(--text-muted)] text-sm md:text-base">
+                        Every couple receives access to our real-time planning dashboard paired with dedicated senior event producers.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Feature 1 -->
+                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all">
+                        <div class="w-12 h-12 rounded-2xl bg-[var(--bg-secondary)] text-[var(--accent-color)] flex items-center justify-center text-xl mb-5">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">Smart Budget Forecasting</h4>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-4">
+                            Track vendor deposits, payment milestones, and automated cost breakdowns without surprise overruns.
+                        </p>
+                        <a href="user.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)]">Try Calculator →</a>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all">
+                        <div class="w-12 h-12 rounded-2xl bg-[var(--bg-secondary)] text-[var(--accent-color)] flex items-center justify-center text-xl mb-5">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">RSVP & Dietary Concierge</h4>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-4">
+                            Custom digital invitations, automated WhatsApp reminders, hotel room blocks, and allergy tracking.
+                        </p>
+                        <a href="user.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)]">View Demo →</a>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all">
+                        <div class="w-12 h-12 rounded-2xl bg-[var(--bg-secondary)] text-[var(--accent-color)] flex items-center justify-center text-xl mb-5">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">3D Seating & Stage Blueprints</h4>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-4">
+                            Walk through your reception layout in 3D before a single table, floral arch, or spotlight is placed.
+                        </p>
+                        <a href="services.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)]">See Layouts →</a>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all">
+                        <div class="w-12 h-12 rounded-2xl bg-[var(--bg-secondary)] text-[var(--accent-color)] flex items-center justify-center text-xl mb-5">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">8-Director Showtime Crew</h4>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-4">
+                            On-site bridal stylists, vendor dispatchers, and timeline directors managing every cue on your wedding day.
+                        </p>
+                        <a href="about.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)]">Meet The Crew →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Curated Partner Venues & Estates -->
+        <section class="py-20 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+            <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+                <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-4">
+                    <div>
+                        <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest block mb-2">
+                            <i class="fas fa-crown mr-1"></i> Priority Dates Available
+                        </span>
+                        <h2 class="text-3xl md:text-4xl font-black text-[var(--text-main)]">
+                            Exclusive Partner Venues
+                        </h2>
+                    </div>
+                    <a href="pricing.html" class="btn btn-solid">
+                        Compare Venue Packages
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Venue 1 -->
+                    <div class="bg-[var(--bg-card)] p-5 rounded-[26px] border border-[var(--border-color)] flex flex-col shadow-sm hover:shadow-xl transition-all">
+                        <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=500&q=80" alt="Villa Aurelia" class="w-full h-48 object-cover rounded-2xl mb-4">
+                        <div class="flex justify-between items-center text-[11px] font-bold text-[var(--accent-color)] uppercase mb-1">
+                            <span><i class="fas fa-location-dot mr-1"></i> Lake Como, Italy</span>
+                            <span>250 Guests</span>
+                        </div>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-3">Villa Aurelia Waterfront</h4>
+                        <div class="flex items-center justify-between pt-3 border-t border-[var(--border-color)] mt-auto">
+                            <span class="text-sm font-black text-[var(--text-main)]">From $18,500</span>
+                            <a href="pricing.html" class="btn btn-outline !py-2 !px-4 !text-[10px]">Brochure</a>
+                        </div>
+                    </div>
+
+                    <!-- Venue 2 -->
+                    <div class="bg-[var(--bg-card)] p-5 rounded-[26px] border border-[var(--border-color)] flex flex-col shadow-sm hover:shadow-xl transition-all">
+                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=500&q=80" alt="Glass Conservatory" class="w-full h-48 object-cover rounded-2xl mb-4">
+                        <div class="flex justify-between items-center text-[11px] font-bold text-[var(--accent-color)] uppercase mb-1">
+                            <span><i class="fas fa-location-dot mr-1"></i> Hudson Valley, NY</span>
+                            <span>180 Guests</span>
+                        </div>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-3">The Glass Conservatory</h4>
+                        <div class="flex items-center justify-between pt-3 border-t border-[var(--border-color)] mt-auto">
+                            <span class="text-sm font-black text-[var(--text-main)]">From $12,000</span>
+                            <a href="pricing.html" class="btn btn-outline !py-2 !px-4 !text-[10px]">Brochure</a>
+                        </div>
+                    </div>
+
+                    <!-- Venue 3 -->
+                    <div class="bg-[var(--bg-card)] p-5 rounded-[26px] border border-[var(--border-color)] flex flex-col shadow-sm hover:shadow-xl transition-all">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=500&q=80" alt="Rosewood Cliffside" class="w-full h-48 object-cover rounded-2xl mb-4">
+                        <div class="flex justify-between items-center text-[11px] font-bold text-[var(--accent-color)] uppercase mb-1">
+                            <span><i class="fas fa-location-dot mr-1"></i> Santorini, Greece</span>
+                            <span>120 Guests</span>
+                        </div>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-3">Rosewood Caldera Terrace</h4>
+                        <div class="flex items-center justify-between pt-3 border-t border-[var(--border-color)] mt-auto">
+                            <span class="text-sm font-black text-[var(--text-main)]">From $14,900</span>
+                            <a href="pricing.html" class="btn btn-outline !py-2 !px-4 !text-[10px]">Brochure</a>
+                        </div>
+                    </div>
+
+                    <!-- Venue 4 -->
+                    <div class="bg-[var(--bg-card)] p-5 rounded-[26px] border border-[var(--border-color)] flex flex-col shadow-sm hover:shadow-xl transition-all">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=500&q=80" alt="Chateau de Lumiere" class="w-full h-48 object-cover rounded-2xl mb-4">
+                        <div class="flex justify-between items-center text-[11px] font-bold text-[var(--accent-color)] uppercase mb-1">
+                            <span><i class="fas fa-location-dot mr-1"></i> Udaipur, India</span>
+                            <span>400 Guests</span>
+                        </div>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-3">The Suryagarh Royal Courtyard</h4>
+                        <div class="flex items-center justify-between pt-3 border-t border-[var(--border-color)] mt-auto">
+                            <span class="text-sm font-black text-[var(--text-main)]">From $22,000</span>
+                            <a href="pricing.html" class="btn btn-outline !py-2 !px-4 !text-[10px]">Brochure</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Flawless Day-Of Timeline Orchestration -->
+        <section class="py-20 bg-[var(--bg-color)] border-b border-[var(--border-color)]">
+            <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest block mb-2">
+                        <i class="fas fa-clock mr-1"></i> Minute-By-Minute Precision
+                    </span>
+                    <h2 class="text-3xl md:text-4xl font-black text-[var(--text-main)] mb-3">
+                        How We Orchestrate Your Wedding Day
+                    </h2>
+                    <p class="text-[var(--text-muted)] text-sm md:text-base">
+                        While you sip champagne with your wedding party, our backstage producers synchronize every vendor cue.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <!-- Step 1 -->
+                    <div class="bg-[var(--bg-secondary)] p-7 rounded-[28px] border border-[var(--border-color)] relative">
+                        <span class="inline-block px-3 py-1 rounded-full bg-[var(--accent-color)] text-white text-[11px] font-bold uppercase mb-4">
+                            09:00 AM • Phase 01
+                        </span>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">Bridal Suite & Styling</h4>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed">
+                            Hair & makeup artists arrive on schedule, couture garments are steamed, and flat-lay photography begins.
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-[var(--bg-secondary)] p-7 rounded-[28px] border border-[var(--border-color)] relative">
+                        <span class="inline-block px-3 py-1 rounded-full bg-[var(--accent-color)] text-white text-[11px] font-bold uppercase mb-4">
+                            04:00 PM • Phase 02
+                        </span>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">The Processional Cue</h4>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed">
+                            Ushers seat VIP family members, lapel mics are sound-checked, and live strings cue your aisle entrance.
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-[var(--bg-secondary)] p-7 rounded-[28px] border border-[var(--border-color)] relative">
+                        <span class="inline-block px-3 py-1 rounded-full bg-[var(--accent-color)] text-white text-[11px] font-bold uppercase mb-4">
+                            05:30 PM • Phase 03
+                        </span>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">Golden Hour & Cocktails</h4>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed">
+                            Guests enjoy signature botanical cocktails while we whisk you away for private golden-hour portraits.
+                        </p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="bg-[var(--bg-secondary)] p-7 rounded-[28px] border border-[var(--border-color)] relative">
+                        <span class="inline-block px-3 py-1 rounded-full bg-[var(--accent-color)] text-white text-[11px] font-bold uppercase mb-4">
+                            07:30 PM • Phase 04
+                        </span>
+                        <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">Grand Reception & Gala</h4>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed">
+                            Cold-sparkler first dance, synchronized dinner service, champagne tower toast, and after-party DJ handover.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Real Couple Love Stories & Testimonials -->
+        <section class="py-20 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+            <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest block mb-2">
+                        <i class="fas fa-quote-left mr-1"></i> Vetted Love Notes
+                    </span>
+                    <h2 class="text-3xl md:text-4xl font-black text-[var(--text-main)]">
+                        Words From Our WedNow Couples
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Review 1 -->
+                    <div class="bg-[var(--bg-card)] p-8 rounded-[28px] border border-[var(--border-color)] shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex text-yellow-400 text-xs mb-4 gap-1">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <p class="text-[var(--text-main)] text-sm md:text-base italic leading-relaxed mb-6">
+                                "WedNow turned a 220-guest destination wedding in Lake Como into the most effortless week of our lives. Every floral arch looked straight out of Vogue."
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4 border-t border-[var(--border-color)]">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Elena" class="w-12 h-12 rounded-full object-cover">
+                            <div>
+                                <h4 class="font-bold text-sm text-[var(--text-main)]">Elena & Julian Vance</h4>
+                                <p class="text-[11px] text-[var(--accent-color)] font-bold uppercase">Villa Aurelia • Full Planning</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="bg-[var(--bg-card)] p-8 rounded-[28px] border border-[var(--border-color)] shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex text-yellow-400 text-xs mb-4 gap-1">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <p class="text-[var(--text-main)] text-sm md:text-base italic leading-relaxed mb-6">
+                                "Their online budget dashboard saved us over $14,000 in vendor negotiations alone. On the wedding day, we didn't have to answer a single phone call."
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4 border-t border-[var(--border-color)]">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Marcus" class="w-12 h-12 rounded-full object-cover">
+                            <div>
+                                <h4 class="font-bold text-sm text-[var(--text-main)]">Marcus & Priya Sterling</h4>
+                                <p class="text-[11px] text-[var(--accent-color)] font-bold uppercase">New York • Conservatory Gala</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="bg-[var(--bg-card)] p-8 rounded-[28px] border border-[var(--border-color)] shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex text-yellow-400 text-xs mb-4 gap-1">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <p class="text-[var(--text-main)] text-sm md:text-base italic leading-relaxed mb-6">
+                                "From managing 150 international hotel check-ins to a surprise fireworks finale, the WedNow crew handled our 3-day royal wedding with pure magic."
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4 border-t border-[var(--border-color)]">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Aisha" class="w-12 h-12 rounded-full object-cover">
+                            <div>
+                                <h4 class="font-bold text-sm text-[var(--text-main)]">Aisha & Kabir Kapoor</h4>
+                                <p class="text-[11px] text-[var(--accent-color)] font-bold uppercase">Udaipur • Royal Heritage Vows</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: Instant Date Availability & Consultation Checker -->
+        <section class="py-20 bg-[var(--bg-color)]">
+            <div class="max-w-[1200px] mx-auto px-6 lg:px-12">
+                <div class="bg-gradient-to-r from-rose-600 to-amber-600 rounded-[36px] p-8 md:p-14 text-white shadow-2xl relative overflow-hidden">
+                    <div class="relative z-10 max-w-3xl mx-auto text-center">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold uppercase tracking-widest mb-4">
+                            2026 & 2027 Calendar Now Open
+                        </span>
+                        <h2 class="text-3xl md:text-5xl font-black mb-4 tracking-tight">
+                            Lock In Your Wedding Date With WedNow.
+                        </h2>
+                        <p class="text-rose-100 text-sm md:text-base mb-8 max-w-xl mx-auto">
+                            We accept a limited number of full-service weddings each season to guarantee bespoke attention. Check your date availability below.
+                        </p>
+
+                        <form class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white/15 backdrop-blur-md p-3 rounded-3xl border border-white/25">
+                            <input type="text" placeholder="Preferred Month / Year" class="bg-white text-slate-900 placeholder-slate-400 text-sm font-medium rounded-2xl px-5 py-3.5 focus:outline-none">
+                            <input type="email" placeholder="Your Email Address" class="bg-white text-slate-900 placeholder-slate-400 text-sm font-medium rounded-2xl px-5 py-3.5 focus:outline-none">
+                            <a href="contact.html" class="btn bg-slate-900 hover:bg-slate-800 text-white !rounded-2xl !py-3.5 text-xs font-bold uppercase tracking-wider">
+                                Check Availability
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER PART -->
+    <footer>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-12 mb-10">
+                <div class="xl:col-span-4 flex flex-col items-center xl:items-start text-center xl:text-left">
+                    <a href="index.html" class="inline-flex items-center gap-3 text-2xl font-bold tracking-widest uppercase mb-4" style="color: var(--text-main) !important;">
+                        <i class="fas fa-champagne-glasses" style="color: var(--accent-color);"></i> WedNow
+                    </a>
+                    <p class="text-sm mb-6 max-w-sm" style="color: var(--text-muted);">Designing extraordinary weddings and milestone events with bespoke styling and seamless coordination.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="social-link-circle"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="xl:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
+                    <div>
+                        <h4>Couple Portal</h4>
+                        <ul class="space-y-3">
+                            <li><a href="login.html">Client Login</a></li>
+                            <li><a href="user.html">Planning Dashboard</a></li>
+                            <li><a href="pricing.html">Wedding Packages</a></li>
+                            <li><a href="faq.html">Planning FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Our Services</h4>
+                        <ul class="space-y-3">
+                            <li><a href="services.html">Full-Service Planning</a></li>
+                            <li><a href="services.html">Day-Of Coordination</a></li>
+                            <li><a href="services.html">Destination Weddings</a></li>
+                            <li><a href="services.html">Floral & Venue Styling</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Main Studio</h4>
+                        <ul class="space-y-3 text-sm">
+                            <li><i class="fas fa-map-marker-alt mr-2" style="color: var(--accent-color);"></i>742 Rosewater Ave, NY</li>
+                            <li><i class="fas fa-phone mr-2" style="color: var(--accent-color);"></i><a href="tel:+15550198">+1 (555) 900-VOWS</a></li>
+                            <li><i class="fas fa-envelope mr-2" style="color: var(--accent-color);"></i><a href="contact.html">hello@wednow.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom flex flex-col md:flex-row justify-between items-center text-xs gap-4 font-semibold uppercase tracking-widest">
+                <p style="color: var(--text-muted);">&copy; 2026 WedNow Wedding Planning & Events. All rights reserved.</p>
+                <div class="flex gap-6"><a href="#">Booking Terms</a><a href="#">Privacy Policy</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVITY SCRIPT -->
+    <script>
+        window.addEventListener('scroll', () => {
+            document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        const mobileBtn = document.getElementById('mobile-btn');
+        const fullscreenMenu = document.getElementById('fullscreen-menu');
+        const closeMenu = document.getElementById('close-menu');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+
+        function toggleMenu() {
+            fullscreenMenu.classList.toggle('active');
+            drawerOverlay.classList.toggle('active');
+            document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+        mobileBtn.onclick = closeMenu.onclick = drawerOverlay.onclick = toggleMenu;
+
+        const themeDesktop = document.getElementById('theme-toggle-desktop');
+        const themeMobile = document.getElementById('theme-toggle-mobile');
+        function updateThemeUI(isDark) {
+            document.body.classList.toggle('dark-mode', isDark);
+            if (themeMobile) themeMobile.classList.toggle('active', isDark);
+        }
+        updateThemeUI((localStorage.getItem('theme') || 'light') === 'dark');
+
+        function toggleTheme() {
+            const isDark = !document.body.classList.contains('dark-mode');
+            updateThemeUI(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+        themeDesktop.onclick = toggleTheme;
+        if (themeMobile) themeMobile.onclick = toggleTheme;
+
+        const rtlBtn = document.getElementById('rtl-btn');
+        const rtlMobile = document.getElementById('rtl-toggle-mobile');
+        function updateRTLUI(dir) {
+            document.documentElement.dir = dir;
+            const label = dir === 'rtl' ? 'RTL' : 'LTR';
+            if (rtlBtn) rtlBtn.innerText = label;
+            if (rtlMobile) rtlMobile.innerText = label;
+        }
+        updateRTLUI(localStorage.getItem('dir') || 'ltr');
+
+        function toggleRTL() {
+            const newDir = document.documentElement.dir === 'rtl' ? 'ltr' : 'rtl';
+            localStorage.setItem('dir', newDir);
+            updateRTLUI(newDir);
+        }
+        if (rtlBtn) rtlBtn.onclick = toggleRTL;
+        if (rtlMobile) rtlMobile.onclick = toggleRTL;
+    </script>
+</body>
+</html>

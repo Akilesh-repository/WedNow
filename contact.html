@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | WedNow Wedding Planning & Event Coordination</title>
+    <script src="tailwind.js"></script>
+    <link rel="icon" type="image/jpeg" href="images\images (6).png">
+    <link rel="icon" type="image/png" href="images\images (6).png">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontWeight: { semibold: '500', bold: '600', extrabold: '800', black: '900' },
+                    colors: { accent: 'var(--accent-color)' }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* === CORE & THEME VARIABLES === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); transition: background-color 0.3s, color 0.3s; }
+
+        :root {
+            --bg-color: #FAFAFA; --bg-secondary: #FFF1F2; --bg-card: #FFFFFF;
+            --text-main: #0F172A; --text-muted: #64748B;
+            --accent-color: #E11D48; --accent-dark: #BE123C; --border-color: #FECDD3;
+            --nav-bg: rgba(255, 255, 255, 0.88); --drawer-bg: rgba(255, 255, 255, 0.98);
+            --menu-hover-bg: rgba(225, 29, 72, 0.08);
+        }
+
+        body.dark-mode {
+            --bg-color: #0F172A; --bg-secondary: #1E293B; --bg-card: #1E293B;
+            --text-main: #F8FAFC; --text-muted: #94A3B8;
+            --accent-color: #FB7185; --accent-dark: #E11D48; --border-color: #334155;
+            --nav-bg: rgba(15, 23, 42, 0.88); --drawer-bg: rgba(15, 23, 42, 0.98);
+            --menu-hover-bg: rgba(251, 113, 133, 0.12);
+        }
+
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+        [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
+
+        /* === FLOATING CAPSULE NAVBAR === */
+        .navbar { position: fixed; top: 16px; left: 0; width: 100%; z-index: 1000; transition: all 0.35s ease; padding: 0 16px; }
+        .navbar-capsule { max-width: 1400px; margin: 0 auto; background: var(--nav-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 9999px; height: 70px; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 12px 35px -10px rgba(225, 29, 72, 0.12); transition: all 0.35s ease; }
+        .navbar.scrolled { top: 8px; }
+        .navbar.scrolled .navbar-capsule { height: 62px; border-color: var(--accent-color); box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.18); }
+
+        .nav-link { padding: 8px 14px; border-radius: 9999px; color: var(--text-main); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+        .nav-link:hover, .nav-link.active { background: var(--menu-hover-bg); color: var(--accent-color); }
+
+        .dropdown { position: relative; display: flex; align-items: center; height: 100%; }
+        .dropdown-menu { position: absolute; top: 50px; left: 0; transform: translateY(12px); opacity: 0; visibility: hidden; transition: all 0.25s ease; z-index: 100; }
+        .dropdown-inner { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; min-width: 210px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-item { display: block; padding: 10px 16px; border-radius: 10px; color: var(--text-main); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; white-space: nowrap; }
+        .dropdown-item:hover { background: var(--menu-hover-bg); color: var(--accent-color); transform: translateX(4px); }
+
+        /* === CONTROLS & BUTTONS === */
+        .theme-toggle-pill { width: 52px; height: 28px; background: var(--bg-secondary); border-radius: 30px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 6px; border: 1px solid var(--border-color); }
+        .theme-toggle-pill i { font-size: 10px; z-index: 1; }
+        .theme-toggle-pill .fa-sun { color: #f59e0b; }
+        .theme-toggle-pill .fa-moon { color: #999; }
+        .theme-toggle-pill .thumb { position: absolute; top: 1px; left: 2px; width: 24px; height: 24px; background: white; border-radius: 50%; transition: transform 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 2; border: 1px solid var(--border-color); }
+        body.dark-mode .theme-toggle-pill .thumb { transform: translateX(22px); background: #333; }
+
+        .rtl-btn-style { width: 44px; height: 28px; background: var(--bg-secondary); border-radius: 9999px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; cursor: pointer; color: var(--text-main); transition: all 0.3s; }
+        .rtl-btn-style:hover { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
+
+        .btn { padding: 12px 28px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; border-radius: 9999px; }
+        .btn-solid { background: var(--accent-color); color: #FFFFFF !important; }
+        .btn-solid:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 8px 20px -3px rgba(225, 29, 72, 0.35); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--accent-color); color: var(--accent-color) !important; transform: translateY(-2px); }
+
+        /* === MOBILE DRAWER & FOOTER === */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; backdrop-filter: blur(4px); }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
+        .fullscreen-menu { position: fixed; top: 12px; right: 12px; bottom: 12px; width: calc(100% - 24px); max-width: 390px; background: var(--drawer-bg); z-index: 1001; border-radius: 28px; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateX(105%); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); }
+        [dir="rtl"] .fullscreen-menu { right: auto; left: 12px; transform: translateX(-105%); }
+        .fullscreen-menu.active { opacity: 1; visibility: visible; transform: translateX(0); }
+        .mobile-link { display: block; width: 100%; padding: 14px 28px; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-main); transition: all 0.25s; border-bottom: 1px solid var(--border-color); }
+        .mobile-link:hover { color: var(--accent-color); padding-left: 36px; background: var(--menu-hover-bg); }
+
+        footer { background: var(--bg-secondary); border-top: 1px solid var(--border-color); padding-top: 70px; }
+        footer h4 { color: var(--text-main); font-weight: 600; font-size: 1.05rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        footer a, footer li, footer span { color: var(--text-muted); transition: all 0.3s; font-size: 0.95rem; }
+        footer a:hover { color: var(--accent-color); }
+        .social-link-circle { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: var(--text-main); }
+        .social-link-circle:hover { background: var(--accent-color); border-color: var(--accent-color); color: #fff; transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid var(--border-color); padding: 28px 0; margin-top: 50px; }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+
+    <!-- NAVBAR PART (Floating Capsule Design) -->
+    <nav class="navbar" id="main-nav">
+        <div class="navbar-capsule">
+            <a href="index.html" class="inline-flex items-center gap-3 text-xl md:text-2xl font-bold tracking-widest uppercase shrink-0" style="color: var(--text-main) !important;">
+                <span class="w-10 h-10 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] flex items-center justify-center">
+                    <i class="fas fa-champagne-glasses" style="color: var(--accent-color); font-size: 1.1rem;"></i>
+                </span>
+                WedNow
+            </a>
+
+            <div class="hidden xl:flex justify-center items-center gap-1">
+                <div class="dropdown">
+                    <div class="nav-link">Home <i class="fas fa-chevron-down text-[10px] opacity-50"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="index.html" class="dropdown-item">Home Page 1</a>
+                            <a href="home-2.html" class="dropdown-item">Home Page 2</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="pricing.html" class="nav-link">Pricing</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <a href="contact.html" class="nav-link active">Contact</a>
+                <div class="dropdown">
+                    <div class="nav-link">Dashboard <i class="fas fa-chevron-down text-[10px] opacity-50"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="user.html" class="dropdown-item">User Dashboard</a>
+                            <a href="admin.html" class="dropdown-item">Admin Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden xl:flex items-center gap-2.5 shrink-0">
+                <div id="theme-toggle-desktop" class="theme-toggle-pill" title="Toggle Dark Mode">
+                    <i class="fas fa-sun"></i><i class="fas fa-moon"></i><div class="thumb"></div>
+                </div>
+                <button id="rtl-btn" class="rtl-btn-style" title="Toggle LTR/RTL">LTR</button>
+                <a href="login.html" class="btn btn-solid !px-6 !py-2.5 !text-[11px] ml-1">Login</a>
+            </div>
+
+            <div class="xl:hidden flex items-center">
+                <button id="mobile-btn" class="w-10 h-10 rounded-full flex items-center justify-center bg-[var(--bg-secondary)] border border-[var(--border-color)] text-lg text-[var(--text-main)] hover:bg-[var(--accent-color)] hover:text-white transition-colors">
+                    <i class="fas fa-bars-staggered"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HAMBURGER MENU PART -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <div class="fullscreen-menu" id="fullscreen-menu">
+        <div class="w-full px-7 py-5 flex justify-between items-center border-b border-[var(--border-color)]">
+            <a href="index.html" class="inline-flex items-center gap-2.5 text-xl font-bold tracking-widest uppercase" style="color: var(--text-main) !important;">
+                <i class="fas fa-champagne-glasses" style="color: var(--accent-color);"></i> WedNow
+            </a>
+            <button id="close-menu" class="w-9 h-9 rounded-full flex items-center justify-center bg-[var(--bg-secondary)] text-[var(--text-main)] hover:text-[var(--accent-color)]">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="flex flex-col w-full overflow-y-auto flex-1 py-2">
+            <a href="index.html" class="mobile-link">Home Page 1</a>
+            <a href="home-2.html" class="mobile-link">Home Page 2</a>
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="services.html" class="mobile-link">Services</a>
+            <a href="pricing.html" class="mobile-link">Pricing</a>
+            <a href="blog.html" class="mobile-link">Blog</a>
+            <a href="faq.html" class="mobile-link">FAQ</a>
+            <a href="contact.html" class="mobile-link" style="color: var(--accent-color);">Contact</a>
+            <div class="px-7 mt-4 mb-1"><span class="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest">Portals</span></div>
+            <a href="user.html" class="mobile-link !text-sm text-[var(--text-muted)]">User Dashboard</a>
+            <a href="admin.html" class="mobile-link !text-sm text-[var(--text-muted)]">Admin Dashboard</a>
+        </div>
+
+        <div class="w-full px-7 py-6 border-t border-[var(--border-color)] flex flex-col gap-4 bg-[var(--bg-secondary)]">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-[var(--text-muted)] text-[10px] uppercase tracking-widest">Theme</span>
+                    <div id="theme-toggle-mobile" class="theme-toggle-pill"><i class="fas fa-sun"></i><i class="fas fa-moon"></i><div class="thumb"></div></div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[var(--text-muted)] text-[10px] uppercase tracking-widest">Dir</span>
+                    <button id="rtl-toggle-mobile" class="rtl-btn-style">LTR</button>
+                </div>
+            </div>
+            <a href="login.html" class="btn btn-solid w-full !py-3">Login</a>
+        </div>
+    </div>
+
+    <!-- HERO BANNER PART (Contact Content & Imagery - Fits 100% Inside Viewport) -->
+    <section class="relative w-full min-h-[100dvh] xl:h-[100dvh] pt-28 pb-8 flex items-center overflow-hidden bg-[var(--bg-color)] border-b border-[var(--border-color)]">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[300px] bg-[var(--accent-color)] opacity-[0.06] rounded-full blur-[110px] pointer-events-none"></div>
+
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12 w-full grid grid-cols-1 xl:grid-cols-12 gap-8 items-center relative z-10">
+            <!-- Left Editorial Copy & Stats (6 Cols) -->
+            <div class="xl:col-span-6 flex flex-col items-start text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--bg-secondary)] text-[var(--accent-color)] text-[11px] font-bold uppercase tracking-widest mb-4 border border-[var(--border-color)]">
+                    <i class="fas fa-calendar-check"></i> Book Your Private Consultation
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl xl:text-[3.75rem] font-black leading-[1.08] mb-4 text-[var(--text-main)] tracking-tight">
+                    Let's Begin Crafting Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-color)] to-amber-500 italic">Signature</span> Wedding.
+                </h1>
+
+                <p class="text-[var(--text-muted)] text-sm md:text-base max-w-xl font-medium mb-6 leading-relaxed">
+                    Connect with our senior production team to check date availability, request an itemized proposal, or schedule a champagne walkthrough of our New York design studio.
+                </p>
+
+                <div class="flex flex-wrap gap-3 mb-8">
+                    <a href="#contact-form" class="btn btn-solid !py-3.5 !px-8 text-xs gap-2.5 group">
+                        Send An Inquiry <i class="fas fa-arrow-down group-hover:translate-y-1 transition-transform"></i>
+                    </a>
+                    <a href="faq.html" class="btn btn-outline !bg-[var(--bg-card)] !py-3.5 !px-8 text-xs">
+                        Read FAQ First
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 w-full max-w-lg bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-4 shadow-sm">
+                    <div><h4 class="text-xl font-black text-[var(--text-main)]">24<span class="text-[var(--accent-color)]">h</span></h4><p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-bold">Response Time</p></div>
+                    <div class="border-x border-[var(--border-color)] px-4"><h4 class="text-xl font-black text-[var(--text-main)]">3<span class="text-[var(--accent-color)]"></span></h4><p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-bold">Global Offices</p></div>
+                    <div><h4 class="text-xl font-black text-[var(--text-main)]">100<span class="text-[var(--accent-color)]">%</span></h4><p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-bold">Privacy Focus</p></div>
+                </div>
+            </div>
+
+            <!-- Right 3-Arch Compact Visual Bento (6 Cols) -->
+            <div class="xl:col-span-6 grid grid-cols-3 gap-3 sm:gap-4 items-center h-[340px] sm:h-[430px] xl:h-[72vh] max-h-[520px]">
+                <div class="h-[82%] rounded-t-full rounded-b-3xl overflow-hidden border-4 border-[var(--bg-card)] shadow-lg relative group">
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=700&q=80" alt="Design Studio" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <span class="absolute bottom-3 inset-x-2 bg-black/60 backdrop-blur-md text-white text-[9px] font-bold uppercase tracking-widest py-1.5 rounded-full text-center">NY Studio</span>
+                </div>
+                <div class="h-full rounded-t-full rounded-b-3xl overflow-hidden border-4 border-[var(--accent-color)] shadow-2xl relative group">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80" alt="Consultation Meeting" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <span class="absolute bottom-3 inset-x-2 bg-[var(--accent-color)] text-white text-[9px] font-bold uppercase tracking-widest py-1.5 rounded-full text-center shadow-md">Consultations</span>
+                </div>
+                <div class="h-[82%] rounded-t-full rounded-b-3xl overflow-hidden border-4 border-[var(--bg-card)] shadow-lg relative group">
+                    <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=700&q=80" alt="Bespoke Sketching" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <span class="absolute bottom-3 inset-x-2 bg-black/60 backdrop-blur-md text-white text-[9px] font-bold uppercase tracking-widest py-1.5 rounded-full text-center">Bespoke Plans</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTACT PAGE SECTIONS -->
+    <main class="w-full bg-[var(--bg-color)]">
+
+        <!-- SECTION 1: Primary Contact Form (Main Inquiry Intake) -->
+        <section id="contact-form" class="py-20 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+            <div class="max-w-[1400px] mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-5 flex flex-col justify-center">
+                    <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest block mb-2">Step 01 • The Inquiry</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-[var(--text-main)] mb-4">Request Your Wedding Proposal.</h2>
+                    <p class="text-[var(--text-muted)] text-sm md:text-base leading-relaxed mb-8">Fill out our intake form with your anticipated guest count, ideal season, and venue vision. A senior WedNow producer will review your details and respond within 24 hours to schedule an introductory video consultation.</p>
+                    <div class="bg-[var(--bg-card)] p-6 rounded-[24px] border border-[var(--border-color)] shadow-sm">
+                        <h4 class="font-bold text-sm uppercase tracking-widest mb-4 border-b border-[var(--border-color)] pb-3">Direct Contact</h4>
+                        <div class="space-y-3 text-sm font-medium">
+                            <p class="flex items-center gap-3"><i class="fas fa-envelope text-[var(--accent-color)] w-4 text-center"></i> <a href="mailto:hello@wednow.com" class="hover:text-[var(--accent-color)]">hello@wednow.com</a></p>
+                            <p class="flex items-center gap-3"><i class="fas fa-phone text-[var(--accent-color)] w-4 text-center"></i> <a href="tel:+15559008697" class="hover:text-[var(--accent-color)]">+1 (555) 900-VOWS</a></p>
+                            <p class="flex items-center gap-3"><i class="fas fa-clock text-[var(--accent-color)] w-4 text-center"></i> Mon–Sat, 9am–6pm EST</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-7 bg-[var(--bg-card)] p-8 md:p-10 rounded-[32px] border border-[var(--border-color)] shadow-xl">
+                    <form class="space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div><label class="block text-[11px] font-bold uppercase text-[var(--text-muted)] mb-1.5">First Name</label><input type="text" class="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-color)]" placeholder="Jane"></div>
+                            <div><label class="block text-[11px] font-bold uppercase text-[var(--text-muted)] mb-1.5">Partner's Name</label><input type="text" class="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-color)]" placeholder="John"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div><label class="block text-[11px] font-bold uppercase text-[var(--text-muted)] mb-1.5">Email Address</label><input type="email" class="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-color)]" placeholder="jane@example.com"></div>
+                            <div><label class="block text-[11px] font-bold uppercase text-[var(--text-muted)] mb-1.5">Phone Number</label><input type="tel" class="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-color)]" placeholder="+1 (555) 000-0000"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div><label class="block text-[11px] font-bold uppercase text-[var(--text-muted)] mb-1.5">Estimated Date / Season</label><input type="text" class="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-color)]" placeholder="Fall 2026"></div>
+                            <div><label class="block text-[11px] font-bold uppercase text-[var(--text-muted)] mb-1.5">Estimated Guest Count</label><input type="number" class="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-color)]" placeholder="150"></div>
+                        </div>
+                        <div><label class="block text-[11px] font-bold uppercase text-[var(--text-muted)] mb-1.5">Event Vision & Venue Ideas</label><textarea rows="4" class="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-color)] resize-none" placeholder="Tell us about your dream location or aesthetic..."></textarea></div>
+                        <button type="button" class="btn btn-solid w-full !py-4 !rounded-xl !mt-2">Submit Wedding Inquiry</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Global Studio Locations Grid (Verified Working Images) -->
+        <section class="py-20 bg-[var(--bg-color)] border-b border-[var(--border-color)]">
+            <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest block mb-2">Global Operations</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-[var(--text-main)]">Our International Ateliers</h2>
+                    <p class="text-[var(--text-muted)] text-sm md:text-base mt-3">We welcome clients for in-person design consultations and vendor tastings at any of our three dedicated production headquarters.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-fr">
+                    <!-- New York Card -->
+                    <div class="bg-[var(--bg-card)] rounded-[28px] border border-[var(--border-color)] shadow-sm overflow-hidden flex flex-col h-full group">
+                        <div class="h-52 w-full overflow-hidden relative bg-[var(--bg-secondary)] shrink-0">
+                            <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80" alt="New York Flagship" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute top-3 left-3 bg-black/65 text-white text-[10px] uppercase font-bold px-3.5 py-1.5 rounded-full backdrop-blur-sm">Global HQ</div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-1">
+                            <h4 class="font-black text-xl mb-1 text-[var(--text-main)]">New York City</h4>
+                            <p class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-4 pb-4 border-b border-[var(--border-color)]">United States</p>
+                            <p class="text-[var(--text-muted)] text-sm mb-2 flex items-center gap-2"><i class="fas fa-map-marker-alt text-[var(--accent-color)] w-4 text-center"></i> 742 Rosewater Ave, Suite 300, NY 10012</p>
+                            <p class="text-[var(--text-muted)] text-sm flex items-center gap-2 mt-auto"><i class="fas fa-phone text-[var(--accent-color)] w-4 text-center"></i> +1 (555) 900-8697</p>
+                        </div>
+                    </div>
+
+                    <!-- Milan Card (Fixed Working Image) -->
+                    <div class="bg-[var(--bg-card)] rounded-[28px] border border-[var(--border-color)] shadow-sm overflow-hidden flex flex-col h-full group">
+                        <div class="h-52 w-full overflow-hidden relative bg-[var(--bg-secondary)] shrink-0">
+                            <img src="https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=800&q=80" alt="Milan Europe Desk" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute top-3 left-3 bg-black/65 text-white text-[10px] uppercase font-bold px-3.5 py-1.5 rounded-full backdrop-blur-sm">Europe Desk</div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-1">
+                            <h4 class="font-black text-xl mb-1 text-[var(--text-main)]">Milan</h4>
+                            <p class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-4 pb-4 border-b border-[var(--border-color)]">Italy</p>
+                            <p class="text-[var(--text-muted)] text-sm mb-2 flex items-center gap-2"><i class="fas fa-map-marker-alt text-[var(--accent-color)] w-4 text-center"></i> Via Monte Napoleone 15, 20121 Milano</p>
+                            <p class="text-[var(--text-muted)] text-sm flex items-center gap-2 mt-auto"><i class="fas fa-phone text-[var(--accent-color)] w-4 text-center"></i> +39 02 1234 5678</p>
+                        </div>
+                    </div>
+
+                    <!-- Udaipur Card (Fixed Working Image) -->
+                    <div class="bg-[var(--bg-card)] rounded-[28px] border border-[var(--border-color)] shadow-sm overflow-hidden flex flex-col h-full group">
+                        <div class="h-52 w-full overflow-hidden relative bg-[var(--bg-secondary)] shrink-0">
+                            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Udaipur Asia Desk" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute top-3 left-3 bg-black/65 text-white text-[10px] uppercase font-bold px-3.5 py-1.5 rounded-full backdrop-blur-sm">Asia Desk</div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-1">
+                            <h4 class="font-black text-xl mb-1 text-[var(--text-main)]">Udaipur</h4>
+                            <p class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-4 pb-4 border-b border-[var(--border-color)]">India</p>
+                            <p class="text-[var(--text-muted)] text-sm mb-2 flex items-center gap-2"><i class="fas fa-map-marker-alt text-[var(--accent-color)] w-4 text-center"></i> Lake Pichola Marg, Rajasthan 313001</p>
+                            <p class="text-[var(--text-muted)] text-sm flex items-center gap-2 mt-auto"><i class="fas fa-phone text-[var(--accent-color)] w-4 text-center"></i> +91 98 7654 3210</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Working Google Map Integration -->
+        <section class="w-full h-[420px] md:h-[500px] relative bg-[var(--bg-secondary)] overflow-hidden border-b border-[var(--border-color)]">
+            <iframe 
+                title="WedNow New York Flagship Map"
+                src="https://maps.google.com/maps?q=SoHo,New+York,NY&t=&z=14&ie=UTF8&iwloc=&output=embed" 
+                width="100%" 
+                height="100%" 
+                style="border:0; filter: grayscale(35%) contrast(1.05);" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade" 
+                class="absolute inset-0 w-full h-full">
+            </iframe>
+            <!-- Floating HQ Card Overlay -->
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-12 lg:top-12 lg:bottom-auto bg-[var(--nav-bg)] backdrop-blur-md border border-[var(--border-color)] p-6 rounded-3xl shadow-2xl w-[90%] max-w-[340px] z-10">
+                <div class="w-12 h-12 bg-[var(--accent-color)] text-white rounded-full flex items-center justify-center text-xl mb-4 shadow-lg"><i class="fas fa-map-pin"></i></div>
+                <h4 class="font-black text-xl text-[var(--text-main)] mb-1">New York Flagship</h4>
+                <p class="text-[var(--text-muted)] text-sm mb-4">742 Rosewater Ave, SoHo, NY. By Appointment Only. Valet parking available for clients.</p>
+                <a href="https://maps.google.com/?q=SoHo,New+York,NY" target="_blank" class="text-[11px] font-bold uppercase tracking-widest text-[var(--accent-color)] hover:underline">Open In Google Maps →</a>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Direct Department Directory -->
+        <section class="py-20 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+            <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest block mb-2">Vendor & Press Directory</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-[var(--text-main)]">Route Your Inquiry Directly.</h2>
+                    <p class="text-[var(--text-muted)] text-sm md:text-base mt-3">Are you a venue manager, florist, or journalist? Contact our specialized divisions directly to bypass the couple intake queue.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
+                    <div class="bg-[var(--bg-card)] p-6 rounded-[24px] border border-[var(--border-color)] flex flex-col items-center text-center shadow-sm">
+                        <i class="fas fa-camera text-2xl text-[var(--accent-color)] mb-3"></i>
+                        <h4 class="font-bold text-[var(--text-main)] mb-1">Press & Media</h4>
+                        <p class="text-xs text-[var(--text-muted)] mb-3">For editorial features and interviews.</p>
+                        <a href="mailto:press@wednow.com" class="text-[11px] font-bold text-[var(--accent-color)] mt-auto">press@wednow.com</a>
+                    </div>
+                    <div class="bg-[var(--bg-card)] p-6 rounded-[24px] border border-[var(--border-color)] flex flex-col items-center text-center shadow-sm">
+                        <i class="fas fa-handshake text-2xl text-[var(--accent-color)] mb-3"></i>
+                        <h4 class="font-bold text-[var(--text-main)] mb-1">Vendor Relations</h4>
+                        <p class="text-xs text-[var(--text-muted)] mb-3">To join our global preferred vendor list.</p>
+                        <a href="mailto:vendors@wednow.com" class="text-[11px] font-bold text-[var(--accent-color)] mt-auto">vendors@wednow.com</a>
+                    </div>
+                    <div class="bg-[var(--bg-card)] p-6 rounded-[24px] border border-[var(--border-color)] flex flex-col items-center text-center shadow-sm">
+                        <i class="fas fa-briefcase text-2xl text-[var(--accent-color)] mb-3"></i>
+                        <h4 class="font-bold text-[var(--text-main)] mb-1">Careers</h4>
+                        <p class="text-xs text-[var(--text-muted)] mb-3">Join our coordination or design team.</p>
+                        <a href="mailto:careers@wednow.com" class="text-[11px] font-bold text-[var(--accent-color)] mt-auto">careers@wednow.com</a>
+                    </div>
+                    <div class="bg-[var(--bg-card)] p-6 rounded-[24px] border border-[var(--border-color)] flex flex-col items-center text-center shadow-sm">
+                        <i class="fas fa-file-invoice text-2xl text-[var(--accent-color)] mb-3"></i>
+                        <h4 class="font-bold text-[var(--text-main)] mb-1">Billing Support</h4>
+                        <p class="text-xs text-[var(--text-muted)] mb-3">Existing clients with invoice queries.</p>
+                        <a href="mailto:billing@wednow.com" class="text-[11px] font-bold text-[var(--accent-color)] mt-auto">billing@wednow.com</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: "What Happens Next" Timeline Banner -->
+        <section class="py-20 bg-[var(--bg-color)]">
+            <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+                <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[36px] p-8 md:p-12 shadow-xl text-center">
+                    <h2 class="text-2xl md:text-3xl font-black text-[var(--text-main)] mb-8">What Happens After I Submit The Form?</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+                        <div class="hidden md:block absolute top-6 left-1/6 right-1/6 h-0.5 bg-[var(--border-color)] -z-10 w-2/3 mx-auto"></div>
+                        <div class="flex flex-col items-center bg-[var(--bg-card)]">
+                            <div class="w-12 h-12 rounded-full bg-[var(--bg-secondary)] border-2 border-[var(--accent-color)] text-[var(--accent-color)] flex items-center justify-center font-black mb-4">1</div>
+                            <h4 class="font-bold text-lg mb-2">24-Hour Review</h4>
+                            <p class="text-sm text-[var(--text-muted)] max-w-xs">Our directors review your dates and guest count to assign the perfect regional producer.</p>
+                        </div>
+                        <div class="flex flex-col items-center bg-[var(--bg-card)]">
+                            <div class="w-12 h-12 rounded-full bg-[var(--bg-secondary)] border-2 border-[var(--border-color)] text-[var(--text-muted)] flex items-center justify-center font-black mb-4">2</div>
+                            <h4 class="font-bold text-lg mb-2">Video Consultation</h4>
+                            <p class="text-sm text-[var(--text-muted)] max-w-xs">A 30-minute Zoom call to map out your aesthetic vision, venue ideas, and high-level budget.</p>
+                        </div>
+                        <div class="flex flex-col items-center bg-[var(--bg-card)]">
+                            <div class="w-12 h-12 rounded-full bg-[var(--bg-secondary)] border-2 border-[var(--border-color)] text-[var(--text-muted)] flex items-center justify-center font-black mb-4">3</div>
+                            <h4 class="font-bold text-lg mb-2">Custom Proposal</h4>
+                            <p class="text-sm text-[var(--text-muted)] max-w-xs">You receive an itemized planning contract and digital moodboard to secure your date.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER PART -->
+    <footer>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-12 mb-10">
+                <div class="xl:col-span-4 flex flex-col items-center xl:items-start text-center xl:text-left">
+                    <a href="index.html" class="inline-flex items-center gap-3 text-2xl font-bold tracking-widest uppercase mb-4" style="color: var(--text-main) !important;">
+                        <i class="fas fa-champagne-glasses" style="color: var(--accent-color);"></i> WedNow
+                    </a>
+                    <p class="text-sm mb-6 max-w-sm" style="color: var(--text-muted);">Designing extraordinary weddings and milestone events with bespoke styling and seamless coordination.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="social-link-circle"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="xl:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
+                    <div>
+                        <h4>Couple Portal</h4>
+                        <ul class="space-y-3">
+                            <li><a href="login.html">Client Login</a></li>
+                            <li><a href="user.html">Planning Dashboard</a></li>
+                            <li><a href="pricing.html">Wedding Packages</a></li>
+                            <li><a href="faq.html">Planning FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Our Services</h4>
+                        <ul class="space-y-3">
+                            <li><a href="services.html">Full-Service Planning</a></li>
+                            <li><a href="services.html">Day-Of Coordination</a></li>
+                            <li><a href="services.html">Destination Weddings</a></li>
+                            <li><a href="services.html">Floral & Venue Styling</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Main Studio</h4>
+                        <ul class="space-y-3 text-sm">
+                            <li><i class="fas fa-map-marker-alt mr-2" style="color: var(--accent-color);"></i>742 Rosewater Ave, NY</li>
+                            <li><i class="fas fa-phone mr-2" style="color: var(--accent-color);"></i><a href="tel:+15550198">+1 (555) 900-VOWS</a></li>
+                            <li><i class="fas fa-envelope mr-2" style="color: var(--accent-color);"></i><a href="contact.html">hello@wednow.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom flex flex-col md:flex-row justify-between items-center text-xs gap-4 font-semibold uppercase tracking-widest">
+                <p style="color: var(--text-muted);">&copy; 2026 WedNow Wedding Planning & Events. All rights reserved.</p>
+                <div class="flex gap-6"><a href="#">Booking Terms</a><a href="#">Privacy Policy</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVITY SCRIPT -->
+    <script>
+        window.addEventListener('scroll', () => {
+            document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        const mobileBtn = document.getElementById('mobile-btn');
+        const fullscreenMenu = document.getElementById('fullscreen-menu');
+        const closeMenu = document.getElementById('close-menu');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+
+        function toggleMenu() {
+            fullscreenMenu.classList.toggle('active');
+            drawerOverlay.classList.toggle('active');
+            document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+        mobileBtn.onclick = closeMenu.onclick = drawerOverlay.onclick = toggleMenu;
+
+        const themeDesktop = document.getElementById('theme-toggle-desktop');
+        const themeMobile = document.getElementById('theme-toggle-mobile');
+        function updateThemeUI(isDark) {
+            document.body.classList.toggle('dark-mode', isDark);
+            if (themeMobile) themeMobile.classList.toggle('active', isDark);
+        }
+        updateThemeUI((localStorage.getItem('theme') || 'light') === 'dark');
+
+        function toggleTheme() {
+            const isDark = !document.body.classList.contains('dark-mode');
+            updateThemeUI(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+        themeDesktop.onclick = toggleTheme;
+        if (themeMobile) themeMobile.onclick = toggleTheme;
+
+        const rtlBtn = document.getElementById('rtl-btn');
+        const rtlMobile = document.getElementById('rtl-toggle-mobile');
+        function updateRTLUI(dir) {
+            document.documentElement.dir = dir;
+            const label = dir === 'rtl' ? 'RTL' : 'LTR';
+            if (rtlBtn) rtlBtn.innerText = label;
+            if (rtlMobile) rtlMobile.innerText = label;
+        }
+        updateRTLUI(localStorage.getItem('dir') || 'ltr');
+
+        function toggleRTL() {
+            const newDir = document.documentElement.dir === 'rtl' ? 'ltr' : 'rtl';
+            localStorage.setItem('dir', newDir);
+            updateRTLUI(newDir);
+        }
+        if (rtlBtn) rtlBtn.onclick = toggleRTL;
+        if (rtlMobile) rtlMobile.onclick = toggleRTL;
+    </script>
+</body>
+</html>
