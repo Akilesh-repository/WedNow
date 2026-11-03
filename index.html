@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WedNow | Wedding Planning & Event Coordination</title>
     <script src="tailwind.js"></script>
-    <link rel="icon" type="image/jpeg" href="images\images (6).png">
-    <link rel="icon" type="image/png" href="images\images (6).png">
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script>
         tailwind.config = {
             theme: {
@@ -104,8 +104,8 @@
     <!-- NAVBAR PART (Floating Capsule Design) -->
     <nav class="navbar" id="main-nav">
         <div class="navbar-capsule">
-            <a href="index.html" class="inline-flex items-center gap-3 text-xl md:text-2xl font-bold tracking-widest uppercase shrink-0" style="color: var(--text-main) !important;">
-                <span class="w-10 h-10 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] flex items-center justify-center">
+            <a href="index.html" class="inline-flex items-center gap-3 text-xl md:text-2xl font-bold tracking-widest uppercase shrink-0" style="color: var(--accent-color) !important;">
+                <span class="w-10 h-10 rounded-full bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/25 flex items-center justify-center">
                     <i class="fas fa-champagne-glasses" style="color: var(--accent-color); font-size: 1.1rem;"></i>
                 </span>
                 WedNow
@@ -158,7 +158,7 @@
     <div class="drawer-overlay" id="drawer-overlay"></div>
     <div class="fullscreen-menu" id="fullscreen-menu">
         <div class="w-full px-7 py-5 flex justify-between items-center border-b border-[var(--border-color)]">
-            <a href="index.html" class="inline-flex items-center gap-2.5 text-xl font-bold tracking-widest uppercase" style="color: var(--text-main) !important;">
+            <a href="index.html" class="inline-flex items-center gap-2.5 text-xl font-bold tracking-widest uppercase" style="color: var(--accent-color) !important;">
                 <i class="fas fa-champagne-glasses" style="color: var(--accent-color);"></i> WedNow
             </a>
             <button id="close-menu" class="w-9 h-9 rounded-full flex items-center justify-center bg-[var(--bg-secondary)] text-[var(--text-main)] hover:text-[var(--accent-color)]">
@@ -207,7 +207,7 @@
                 </div>
 
                 <h1 class="text-4xl sm:text-5xl xl:text-[3.75rem] font-black leading-[1.08] mb-4 text-[var(--text-main)] tracking-tight">
-                    Where Timeless Romance Meets <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-color)] to-amber-500 italic">Flawless</span> Execution.
+                    Where Timeless Romance Meets <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-color)] to-rose-400 italic">Flawless</span> Execution.
                 </h1>
 
                 <p class="text-[var(--text-muted)] text-sm md:text-base max-w-xl font-medium mb-6 leading-relaxed">
@@ -326,53 +326,53 @@
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr items-stretch">
                     <!-- Feature 1 -->
-                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all">
+                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all flex flex-col h-full">
                         <div class="w-12 h-12 rounded-2xl bg-[var(--bg-secondary)] text-[var(--accent-color)] flex items-center justify-center text-xl mb-5">
                             <i class="fas fa-chart-pie"></i>
                         </div>
                         <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">Smart Budget Forecasting</h4>
-                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-4">
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-6 flex-1">
                             Track vendor deposits, payment milestones, and automated cost breakdowns without surprise overruns.
                         </p>
-                        <a href="user.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)]">Try Calculator →</a>
+                        <a href="user.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)] mt-auto block">Try Calculator →</a>
                     </div>
 
                     <!-- Feature 2 -->
-                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all">
+                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all flex flex-col h-full">
                         <div class="w-12 h-12 rounded-2xl bg-[var(--bg-secondary)] text-[var(--accent-color)] flex items-center justify-center text-xl mb-5">
                             <i class="fas fa-envelope-open-text"></i>
                         </div>
                         <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">RSVP & Dietary Concierge</h4>
-                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-4">
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-6 flex-1">
                             Custom digital invitations, automated WhatsApp reminders, hotel room blocks, and allergy tracking.
                         </p>
-                        <a href="user.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)]">View Demo →</a>
+                        <a href="user.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)] mt-auto block">View Demo →</a>
                     </div>
 
                     <!-- Feature 3 -->
-                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all">
+                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all flex flex-col h-full">
                         <div class="w-12 h-12 rounded-2xl bg-[var(--bg-secondary)] text-[var(--accent-color)] flex items-center justify-center text-xl mb-5">
                             <i class="fas fa-cubes"></i>
                         </div>
                         <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">3D Seating & Stage Blueprints</h4>
-                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-4">
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-6 flex-1">
                             Walk through your reception layout in 3D before a single table, floral arch, or spotlight is placed.
                         </p>
-                        <a href="services.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)]">See Layouts →</a>
+                        <a href="services.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)] mt-auto block">See Layouts →</a>
                     </div>
 
                     <!-- Feature 4 -->
-                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all">
+                    <div class="bg-[var(--bg-card)] p-7 rounded-[28px] border border-[var(--border-color)] shadow-sm hover:shadow-xl transition-all flex flex-col h-full">
                         <div class="w-12 h-12 rounded-2xl bg-[var(--bg-secondary)] text-[var(--accent-color)] flex items-center justify-center text-xl mb-5">
                             <i class="fas fa-headset"></i>
                         </div>
                         <h4 class="font-bold text-lg text-[var(--text-main)] mb-2">8-Director Showtime Crew</h4>
-                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-4">
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-6 flex-1">
                             On-site bridal stylists, vendor dispatchers, and timeline directors managing every cue on your wedding day.
                         </p>
-                        <a href="about.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)]">Meet The Crew →</a>
+                        <a href="about.html" class="text-xs font-bold uppercase tracking-widest text-[var(--accent-color)] mt-auto block">Meet The Crew →</a>
                     </div>
                 </div>
             </div>
@@ -398,7 +398,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Venue 1 -->
                     <div class="bg-[var(--bg-card)] p-5 rounded-[26px] border border-[var(--border-color)] flex flex-col shadow-sm hover:shadow-xl transition-all">
-                        <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=500&q=80" alt="Villa Aurelia" class="w-full h-48 object-cover rounded-2xl mb-4">
+                        <img src="images/pexels-bertellifotografia-30697991.jpg" alt="Villa Aurelia" class="w-full h-48 object-cover rounded-2xl mb-4">
                         <div class="flex justify-between items-center text-[11px] font-bold text-[var(--accent-color)] uppercase mb-1">
                             <span><i class="fas fa-location-dot mr-1"></i> Lake Como, Italy</span>
                             <span>250 Guests</span>
@@ -412,7 +412,7 @@
 
                     <!-- Venue 2 -->
                     <div class="bg-[var(--bg-card)] p-5 rounded-[26px] border border-[var(--border-color)] flex flex-col shadow-sm hover:shadow-xl transition-all">
-                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=500&q=80" alt="Glass Conservatory" class="w-full h-48 object-cover rounded-2xl mb-4">
+                        <img src="images/pexels-bertellifotografia-33714905.jpg" alt="Glass Conservatory" class="w-full h-48 object-cover rounded-2xl mb-4">
                         <div class="flex justify-between items-center text-[11px] font-bold text-[var(--accent-color)] uppercase mb-1">
                             <span><i class="fas fa-location-dot mr-1"></i> Hudson Valley, NY</span>
                             <span>180 Guests</span>
@@ -426,7 +426,7 @@
 
                     <!-- Venue 3 -->
                     <div class="bg-[var(--bg-card)] p-5 rounded-[26px] border border-[var(--border-color)] flex flex-col shadow-sm hover:shadow-xl transition-all">
-                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=500&q=80" alt="Rosewood Cliffside" class="w-full h-48 object-cover rounded-2xl mb-4">
+                        <img src="images/pexels-bertellifotografia-29708251.jpg" alt="Rosewood Cliffside" class="w-full h-48 object-cover rounded-2xl mb-4">
                         <div class="flex justify-between items-center text-[11px] font-bold text-[var(--accent-color)] uppercase mb-1">
                             <span><i class="fas fa-location-dot mr-1"></i> Santorini, Greece</span>
                             <span>120 Guests</span>
@@ -440,7 +440,7 @@
 
                     <!-- Venue 4 -->
                     <div class="bg-[var(--bg-card)] p-5 rounded-[26px] border border-[var(--border-color)] flex flex-col shadow-sm hover:shadow-xl transition-all">
-                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=500&q=80" alt="Chateau de Lumiere" class="w-full h-48 object-cover rounded-2xl mb-4">
+                        <img src="images/pexels-airamdphoto-29057425.jpg" alt="Chateau de Lumiere" class="w-full h-48 object-cover rounded-2xl mb-4">
                         <div class="flex justify-between items-center text-[11px] font-bold text-[var(--accent-color)] uppercase mb-1">
                             <span><i class="fas fa-location-dot mr-1"></i> Udaipur, India</span>
                             <span>400 Guests</span>
@@ -534,7 +534,7 @@
                     <!-- Review 1 -->
                     <div class="bg-[var(--bg-card)] p-8 rounded-[28px] border border-[var(--border-color)] shadow-sm flex flex-col justify-between">
                         <div>
-                            <div class="flex text-yellow-400 text-xs mb-4 gap-1">
+                            <div class="flex text-[var(--accent-color)] text-xs mb-4 gap-1">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                             <p class="text-[var(--text-main)] text-sm md:text-base italic leading-relaxed mb-6">
@@ -553,7 +553,7 @@
                     <!-- Review 2 -->
                     <div class="bg-[var(--bg-card)] p-8 rounded-[28px] border border-[var(--border-color)] shadow-sm flex flex-col justify-between">
                         <div>
-                            <div class="flex text-yellow-400 text-xs mb-4 gap-1">
+                            <div class="flex text-[var(--accent-color)] text-xs mb-4 gap-1">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                             <p class="text-[var(--text-main)] text-sm md:text-base italic leading-relaxed mb-6">
@@ -572,7 +572,7 @@
                     <!-- Review 3 -->
                     <div class="bg-[var(--bg-card)] p-8 rounded-[28px] border border-[var(--border-color)] shadow-sm flex flex-col justify-between">
                         <div>
-                            <div class="flex text-yellow-400 text-xs mb-4 gap-1">
+                            <div class="flex text-[var(--accent-color)] text-xs mb-4 gap-1">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                             <p class="text-[var(--text-main)] text-sm md:text-base italic leading-relaxed mb-6">
@@ -594,7 +594,7 @@
         <!-- SECTION 6: Instant Date Availability & Consultation Checker -->
         <section class="py-20 bg-[var(--bg-color)]">
             <div class="max-w-[1200px] mx-auto px-6 lg:px-12">
-                <div class="bg-gradient-to-r from-rose-600 to-amber-600 rounded-[36px] p-8 md:p-14 text-white shadow-2xl relative overflow-hidden">
+                <div class="bg-gradient-to-r from-[var(--accent-dark)] to-[var(--accent-color)] rounded-[36px] p-8 md:p-14 text-white shadow-2xl relative overflow-hidden">
                     <div class="relative z-10 max-w-3xl mx-auto text-center">
                         <span class="inline-block px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold uppercase tracking-widest mb-4">
                             2026 & 2027 Calendar Now Open
@@ -624,7 +624,7 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-12 mb-10">
                 <div class="xl:col-span-4 flex flex-col items-center xl:items-start text-center xl:text-left">
-                    <a href="index.html" class="inline-flex items-center gap-3 text-2xl font-bold tracking-widest uppercase mb-4" style="color: var(--text-main) !important;">
+                    <a href="index.html" class="inline-flex items-center gap-3 text-2xl font-bold tracking-widest uppercase mb-4" style="color: var(--accent-color) !important;">
                         <i class="fas fa-champagne-glasses" style="color: var(--accent-color);"></i> WedNow
                     </a>
                     <p class="text-sm mb-6 max-w-sm" style="color: var(--text-muted);">Designing extraordinary weddings and milestone events with bespoke styling and seamless coordination.</p>
